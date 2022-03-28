@@ -10,4 +10,4 @@ Student Info
 =========================
 
 * Student Name: *Lê Đình Thông*
-* Student ID: *BI11-257* 
+* Student ID: *BI11-257*

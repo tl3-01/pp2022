@@ -36,7 +36,7 @@ def course_number():
         course_num = input('Enter the number of courses: ')
         try:
             course_num = int(course_num)
-           if course_num < 0:
+            if course_num < 0:
                 print("The number of courses can't be negative! Try again.")
             elif course_num == 0:
                 print("The number of courses can't be equal to 0! Try again.")
@@ -120,7 +120,11 @@ def student_mark(course):
     for i in range(len(list_student)):
         mark = input(f"Input mark for student ID {i+1} for course {course} :")
         list_student[i]['mark'][course] = mark
-    
+
+# Print the student list
+# Print the course list
+# Print the student mark
+
 def main():
     while(True):
         i = int(input("""

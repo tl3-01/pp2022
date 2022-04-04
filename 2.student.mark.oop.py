@@ -3,7 +3,7 @@ class student:
     def __init__(self, sId, name, DoB)
         self.__id = sId
         self.__name = name
-        self.__DoB = DoB
+        self.__DoB =
         
     """ validation """
     def _checkId(self,sId):
@@ -185,11 +185,17 @@ class courseList:
     def list(self):
         print(_cList)
         
-class Mark(student):
+class Mark(student, course):
     def __init__(self, sId, name, DoB, mark):
         super().__init__(sId, name, DoB)
         self.mark = []
-    def inputMark(self,mark):
+        self.course = 
+    def validateCourseExist(self,courseName):
         while True:
-            courseNameCheck = input("Please enter course name")
             for course in courseList._cList:
+                if courseName != course:
+                    print("Your course name not in the list! Check again!")
+                else:
+                    break
+    
+

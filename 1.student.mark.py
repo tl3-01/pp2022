@@ -10,6 +10,7 @@ courses = {
     "course_id" : None,
     "name" : None
 }
+
 list_course = []
 list_student = []
 # Input number of students

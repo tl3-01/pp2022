@@ -1,7 +1,23 @@
 import re
 import datetime
+<<<<<<< HEAD
 students = {}
 courses = {}
+=======
+students = {
+    "id" : None,
+    "name" : None,
+    "DoB" : None,
+    "mark" : {}
+}
+courses = {
+    "course_id" : None,
+    "name" : None
+}
+
+list_course = []
+list_student = []
+>>>>>>> refs/remotes/origin/master
 # Input number of students
 def studentNumber():
     global student_num

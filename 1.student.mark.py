@@ -41,7 +41,7 @@ def studentInfo():
         while True:
             prefix = input("Please enter one of the prefix \"BI11\" or \"BA10\" for the student ID: ")
             if prefix not in {"BI11", "BA10"}:
-                print("The prefix must be \"BI11\" or \"BA10\. Try again!")
+                print("The prefix must be \"BI11\" or \"BA10\". Try again!")
             else:
                 break
         while True:

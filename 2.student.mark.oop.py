@@ -1,13 +1,49 @@
 import datetime
 import re
 class students:
-    def __init__(self, sId: str, name: str, DoB: datetime):
-        self.__sId = sId
-        self.__name = name
-        self.__DoB = DoB
+    def __init__(self):
+        self.__sId = ''
+        self.__name = ''
+        self.__DoB = ''
+        self.__students = {}
+        
+    """ getter """
+    @property
+    def sId(self):
+        return self.__sId
 
+    @property
+    def name(self):
+        return self.__name
+    
+    @property
+    def DoB(self):
+        return self.__DoB
+    
+    @property
+    def students(self):
+        return self.__students
+    
+    """ setter """
+    
+    @sId.setter
+    def sId(self, sId):
+        self.__sId = sId
+    
+    @name.setter
+    def name(self, name):
+        self.__name = name
+        
+    @DoB.setter
+    def DoB(self, DoB):
+        self.__DoB = DoB
+        
+    @students.setter
+    def students(self, students):
+        self.__students = students
+        
     """ input and validate """
-    def input_id(self):
+    def __input_id(self):
         self.prefix = ''
         while True:
             prefix = input("Please enter one of the prefix \"BI11\" or \"BA10\" for the student ID: ")
@@ -30,15 +66,16 @@ class students:
         self.__sId = prefix + "-" + str(idNumber)
         return self.__sId
     
-    def input_name(self):
+    def __input_name(self):
         while True:
             name = input("Please input student name: ")
             if not re.match(r'[a-zA-Z\s]+$', name):
                 print ("Error! Make sure you only use letters in the student name.")
             else:
+                self.__name = name
                 return self.__name
         
-    def input_DoB(self):
+    def __input_DoB(self):
         while True:
             DoB = input("Please input student DoB (Input format: dd/mm/yyyy): ")
             try:
@@ -46,48 +83,32 @@ class students:
             except ValueError:
                 print("Wrong format for DoB! Try again.")
             else:
+                self.__DoB = DoB
                 return self.__DoB
+            
+    def input_student(self):
+        sId = self.__input_id()
+        name = self.__input_name()
+        DoB = self.__input_DoB()
+        
+        print(self.__students)
+        self.__students[self.__sId] = {
+            "name": self.__name,
+            "DoB": self.__DoB,
+            "marks" : {}
+        }
+        
+        print(self.__students)
+        return self.__students
 
-    """ getter """
-    @property
-    def sId(self):
-        return self.__sId
-
-    @property
-    def name(self):
-        return self.__name
-    
-    @property
-    def DoB(self):
-        return self.__DoB
-    
-    # """ setter """
-    # @sId.setter
-    # def sId(self, sId, prefix, idNumber):
-    #     self.__input_id(sId, prefix, idNumber)
-    #     self.__sId = sId
-    #
-    # @name.setter
-    # def name(self, name):
-    #     self.__input_name(name)
-    #     self.__name = name
-    #    
-    # @DoB.setter
-    # def DoB(self, DoB):
-    #     self.__input_DoB(DoB)
-    #     self.__DoB = DoB
-
-    def __str__(self):
-        return f"Student ID: {self.__sId} \nStudent Name: {self.__name} \nStudent DoB: {self.__DoB}"
-    
 class courses:
     def __init__(self):
         super().__init__()
-        self.__id = 0
+        self.__sId = 0
         self.__name = ''
         
     """ validation """
-    def __input_id(self, sId):
+    def __input_id(self):
         while True:
             self.sId = input(f"\nPlease enter the course Id: ")
             try:
@@ -99,15 +120,17 @@ class courses:
                 elif str(course_id) == '000':
                     print("The ID number can't be all 0s! Try again.")
                 else:
+                    self.__sId = course_id
                     return self.__sId
             except ValueError:
                 print("The ID number must be a number! Try again.")
         
-    def __check_name(self, name):
+    def __check_name(self):
         while True:
             if not re.match(r'[a-zA-Z\s]+$', self.name):
                 print ("Error! Make sure you only use letters in the student name.")
             else:
+                self.__name = name
                 return self.__name
         
     """ getter """
@@ -119,16 +142,16 @@ class courses:
     def name(self):
         return self.__name
     
-    # """ setter """
-    # @sId.setter
-    # def sId(self, sId):
-    #     self.__check_id(sId)
-    #     self.__id = sId
-    # 
-    # @name.setter
-    # def name(self, name):
-    #     self.__check_name(name)
-    #     self.__name = name
+    """ setter """
+    @sId.setter
+    def sId(self, sId):
+        self.__check_id(sId)
+        self.__id = sId
+    
+    @name.setter
+    def name(self, name):
+        self.__check_name(name)
+        self.__name = name
     
     def __str__(self):
         return '{} - {}'.format(self.sId, self.name)
@@ -136,7 +159,7 @@ class courses:
 class studentList:
     def __init__(self):
         self.__student_num = 0
-        self.__students = {}
+
     """getter"""
     @property
     def student_num(self):
@@ -159,18 +182,8 @@ class studentList:
     def input_student(self):
         for i in range(self.input_student_num()):
             print(f"\n--- Input the data for student {i+1} ---")
-            sId = students().input_id()
-            name = students().input_name()
-            DoB = students().input_DoB()
-            self.__students[sId] = {
-                "name": name,
-                "DoB": DoB,
-                "marks" : {}
-            }
-        return self.__students[sId]
-    @property
-    def students(self):
-        return self.__students
+            students().input_student()
+            
 
 class courseList(courses):
     def __init__(self):
@@ -250,43 +263,47 @@ class markList(studentList):
         return f"Student name: {student.__sId} \tMark: {self.__marks[coursename]}"
                 
 def main():
-    while(True):
-        i = int(input("""
------------------------------------------
-| Select one of these option:           |
-| 1. Add student                        |
-| 2. Add course                         |
-| 3. Add mark                           |
-| 4. Get student list                   |
-| 5. Get course list                    |
-| 6. Get student mark                   |
-| 7. Exit                               |
------------------------------------------\n"""))
-        if i == 1:
-            print("You have choosen the option 1: add student")
-            studentList().input_student()
-        elif i == 2:
-            print("You have choosen the option 2: add course")
-            courseList().input_course_num()
-            courseList().input_course()
-        elif i == 3:
-            print("You have choosen the option 3: add mark")
-            markList().validation_course()
-            markList().input_mark()
-        elif i == 4:
-            print("You have choosen the option 4: get the student list")
-            print(students().__str__())
-        elif i == 5:
-            print("You have choosen the option 5: get the course list")
-            courseList().__str__()
-        elif i == 6:
-            print("You have choosen the option 6: get the mark list")
-            markList().__str__()
-        elif i == 7:
-            print("You have choosen the option 7: exit")
-            break
-        else:
-            print("Invalid choice! Try again.")
+    while True:
+        try:
+            i = int(input("""
+    -----------------------------------------
+    | Select one of these option:           |
+    | 1. Add student                        |
+    | 2. Add course                         |
+    | 3. Add mark                           |
+    | 4. Get student list                   |
+    | 5. Get course list                    |
+    | 6. Get student mark                   |
+    | 7. Exit                               |
+    -----------------------------------------\n"""))
+            if i == 1:
+                print("You have choosen the option 1: add student")
+                studentList().input_student()
+            elif i == 2:
+                print("You have choosen the option 2: add course")
+                courseList().input_course_num()
+                courseList().input_course()
+            elif i == 3:
+                print("You have choosen the option 3: add mark")
+                markList().validation_course()
+                markList().input_mark()
+            elif i == 4:
+                print("You have choosen the option 4: get the student list")
+                print(students().name)
+                print(students().students)
+            elif i == 5:
+                print("You have choosen the option 5: get the course list")
+                courseList().__str__()
+            elif i == 6:
+                print("You have choosen the option 6: get the mark list")
+                markList().__str__()
+            elif i == 7:
+                print("You have choosen the option 7: exit")
+                break
+            else:
+                print("Invalid choice! Try again.")
+        except ValueError:
+            print("Wrong format. Try again!")
             
 if __name__ == "__main__":
     main() 
